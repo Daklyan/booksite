@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <label>Username:</label>
-  <input type="text" required minlength="2" maxlength="25">
-  <label>Password:</label>
-  <input type="password" required>
-  <button type="button">Register</button>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <div id="app">
+      <label>Username:</label>
+      <input v-model="username" type="text" required minlength="2" maxlength="25">
+      <label>Password:</label>
+      <input v-model="password" type="password" required>
+      <button @click="register" type="button">Register</button>
+    </div>
+  </body>
 </html>
