@@ -21,9 +21,9 @@ db = SQLAlchemy(app)
 
 class user(db.Model):
     id = db.Column('id', db.Integer, primary_key = True)
-    username = db.Column(db.string(20))
-    pass_hash = db.Column(db.string(64))
-    salt = db.Column(db.string(16))
+    username = db.Column(db.String(20))
+    pass_hash = db.Column(db.String(64))
+    salt = db.Column(db.String(16))
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -55,7 +55,19 @@ def add_user():
         username = request.args.get('username')
         password = request.args.get('password')
 
-        salt = 
+        salt = os.urandom(16)
+
+        while(True):
+            qry_tmp = db.session.query(user).filter_by(salt=salt).first()
+            if qry_tmp is None:
+                break
+            else:
+                salt = os.urandom(16)
+
+        hash = hashlib.sha256(salt + password).hexdigest()
+        usr = user(username=username, pass_hash=hash, salt=salt)
+        db.session.add(usr)
+        db.session.commit()
     except Exception as e:
         error_text = "<p>The error:<br>" + str(e) + "</p>"
         hed = "<h1>Something's wrong</h1>"
